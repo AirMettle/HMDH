@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - apt install -y cmake
+      - apt install -y g++
+      - NUM_CORES=$(nproc || sysctl -n hw.ncpu)
+  pre_build:
+    commands:
+      - mkdir -p "${CODEBUILD_SRC_DIR}/cmake/build"
+      - cd "${CODEBUILD_SRC_DIR}/cmake/build"
+      - cmake ..
+      - make -j $NUM_CORES
+  build:
+    commands:
+      - echo Build started on `date`
+      - mkdir -p "${CODEBUILD_SRC_DIR}/build"
+      - cd "${CODEBUILD_SRC_DIR}/build"
+      - cmake ..
+      - make -j $NUM_CORES
+      - ctest -V
+  post_build:
+    commands:
+      - echo Build completed on `date`

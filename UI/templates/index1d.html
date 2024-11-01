@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>1-D Visualization</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <style>
+    #tooltip {
+      position: absolute;
+      visibility: hidden;
+      background-color: white;
+      border: 1px solid #000;
+      padding: 5px;
+    }
+
+    #tooltip2 {
+      position: absolute;
+      visibility: hidden;
+      background-color: white;
+      border: 1px solid #000;
+      padding: 5px;
+    }
+
+    .top-level-plot-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .Level0-plot-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .Level1-plot-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .Level1-plot-container2 {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 36px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .Button-Menu {
+      display: flex;
+      justify-content: center;
+      /* This centers the buttons horizontally */
+      align-items: center;
+      /* This centers the buttons vertically (if the div has a specific height) */
+      flex-wrap: wrap;
+      /* Allows buttons to wrap into the next line if there's not enough space */
+      gap: 10px;
+      /* Optional: adds space between buttons */
+      margin-bottom: 20px;
+    }
+
+    .Button-Menu button {
+      padding: 10px 20px;
+      /* Adds padding inside the buttons */
+      cursor: pointer;
+      /* Changes cursor to pointer on hover over buttons */
+      /* Additional button styling here */
+    }
+
+    #details-view-M-P {
+      display: flex;
+      justify-content: center;
+      /* Centers children horizontally in the container */
+      align-items: center;
+      /* Centers children vertically in the container */
+      flex-direction: row;
+      /* Aligns children in a row */
+      gap: 20px;
+      /* Optional: adds space between children */
+      font-size: 24px;
+    }
+
+    .mp-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      /* Adjust spacing as needed */
+    }
+
+    .leveldisplay2 {
+      display: none;
+    }
+
+    .leveldisplay3 {
+      display: none;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      /* Aligns the text and logo vertically */
+    }
+
+    .logo-container img {
+      width: 50px;
+      /* Adjust the logo size */
+      height: 45px;
+      /* Adjust the logo size */
+      margin-right: 5px;
+      /* Adds space between the logo and the text */
+    }
+
+    .company-name {
+      color: #1d6fab;
+      /* Sets the text color to blue */
+      font-size: 30px;
+      /* Optional: Adjust the size of the h3 tag */
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .wrapper {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    /* Sticky footer styling */
+    footer {
+      background-color: #f1f1f1;
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      position: sticky;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .show-arrow-outer-div {
+      display: flex;
+      justify-content: center;
+      /* Center horizontally */
+      align-items: center;
+      /* Center vertically */
+      height: 100px;
+      /* Adjust based on your needs */
+      width: 100%;
+      /* Adjust based on your needs or use a specific width */
+
+    }
+
+    .show-arrow-outer-div2 {
+      display: flex;
+      justify-content: center;
+      /* Center horizontally */
+      align-items: center;
+      /* Center vertically */
+      height: 100px;
+      /* Adjust based on your needs */
+      width: 100%;
+      /* Adjust based on your needs or use a specific width */
+
+    }
+
+    .show-arrow-outer-div3 {
+      display: flex;
+      justify-content: center;
+      /* Center horizontally */
+      align-items: center;
+      /* Center vertically */
+      height: 100px;
+      /* Adjust based on your needs */
+      width: 100%;
+      /* Adjust based on your needs or use a specific width */
+
+    }
+
+    .show-arrow-outer-div4 {
+      display: flex;
+      justify-content: center;
+      /* Center horizontally */
+      align-items: center;
+      /* Center vertically */
+      height: 100px;
+      /* Adjust based on your needs */
+      width: 100%;
+      /* Adjust based on your needs or use a specific width */
+
+    }
+
+    .show-arrow {
+      width: 50px;
+      /* Adjust based on the size of your arrow */
+      height: 50px;
+      /* Adjust based on the size of your arrow */
+      background-image: url('../static/down-arrow-svgrepo-com.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: none;
+    }
+
+    .show-arrow2 {
+      width: 50px;
+      /* Adjust based on the size of your arrow */
+      height: 50px;
+      /* Adjust based on the size of your arrow */
+      background-image: url('../static/down-arrow-svgrepo-com.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: none;
+    }
+
+    .show-arrow3 {
+      width: 50px;
+      /* Adjust based on the size of your arrow */
+      height: 50px;
+      /* Adjust based on the size of your arrow */
+      background-image: url('../static/down-arrow-svgrepo-com.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: none;
+    }
+
+    .show-arrow4 {
+      width: 50px;
+      /* Adjust based on the size of your arrow */
+      height: 50px;
+      /* Adjust based on the size of your arrow */
+      background-image: url('../static/down-arrow-svgrepo-com.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: none;
+    }
+    .level-2-button , .level-3-button , .level-4-button {
+      display: none;
+      justify-content: center;
+      /* This centers the buttons horizontally */
+      align-items: center;
+      /* This centers the buttons vertically (if the div has a specific height) */
+      flex-wrap: wrap;
+      /* Allows buttons to wrap into the next line if there's not enough space */
+      gap: 10px;
+      /* Optional: adds space between buttons */
+      margin-bottom: 20px;
+    }
+
+    .level-2-button button , .level-3-button button , .level-4-button button {
+      padding: 10px 20px;
+      /* Adds padding inside the buttons */
+      cursor: pointer;
+      /* Changes cursor to pointer on hover over buttons */
+      /* Additional button styling here */
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="logo-container">
+      <!-- Logo image -->
+      <img src="/static/airmettle_logo.png" alt="AirMettle Logo" />
+      <!-- Company name -->
+      <h3 class="company-name">AirMettle</h3>
+    </div>
+    <h1>Hierarchical Multi-Dimensional Histograms <span id="configDisplay">1-D</span> </h1>
+    <div class="content">
+      <div class="Button-Menu">
+        <button onClick="setAndLoadPlots('linear')">Linear Scale</button>
+        <button onClick="setAndLoadPlots('log')">Log Scale</button>
+        <button onClick="showLegend()">Show Legend</button>
+        <button onClick="resetPage()">Reset</button>
+      </div>
+      <div class="leveldisplay">
+        <h1>Top Level View</h1>
+      </div>
+      <div id="top-level-plot-container" class="top-level-plot-container">
+        <!-- D3 plots will be appended here -->
+      </div>
+      <div id="tooltip"></div>
+      <div id="tooltip2"></div>
+      <div class="show-arrow-outer-div">
+        <div class="show-arrow"></div>
+      </div>
+      <div class="level-2-button">
+        <button class="level-2-button-btn" onClick="showLegend2()">Show Legend</button>
+      </div>
+      <div class="leveldisplay2">
+        <h1>Level 2</h1>
+      </div>
+      <div id="Level0-plot-container" class="Level0-plot-container">
+        <!-- D3 plots will be appended here -->
+      </div>
+      <div class="show-arrow-outer-div2">
+        <div class="show-arrow2"></div>
+      </div>
+      <div class="level-3-button">
+        <button onClick="showLegend3()">Show Legend</button>
+      </div>
+      <div class="leveldisplay3">
+        <h1>Level 3</h1>
+      </div>
+      <div id="Level1-plot-container" class="Level1-plot-container">
+        <!-- D3 plots will be appended here -->
+      </div>
+      <div class="show-arrow-outer-div3">
+        <div class="show-arrow3"></div>
+      </div>
+      <div class="level-4-button">
+        <button onClick="showLegend4()">Show Legend</button>
+      </div>
+      <div class="leveldisplay3">
+        <h1>Level 3</h1>
+      </div>
+      <div id="Level1-plot-container2" class="Level1-plot-container2">
+        <!-- D3 plots will be appended here -->
+      </div>
+      <div class="show-arrow-outer-div4">
+        <div class="show-arrow4"></div>
+      </div>
+      <div id="details-view-M-P" style="margin-top: 20px; display: flex;">
+
+        <div id="xyz-labels" class="mp-section"></div> <!-- For X, Y, Z labels -->
+        <div id="m-bits" class="mp-section"></div> <!-- For M bits -->
+        <div id="p-bits" class="mp-section"></div> <!-- For P bits -->
+      </div>
+
+
+    </div>
+    <footer>
+      <p>Version 1.0 License: Evaluation (HMDH) &copy; 2024 AirMettle, Inc. All rights reserved.</p>
+    </footer>
+  </div>
+  <script src="/static/js/histogram1d.js"></script>
+</body>
+
+</html>

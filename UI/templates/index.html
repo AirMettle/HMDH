@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-D Data Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        /* General Reset */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .wrapper {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .logo-container img {
+            width: 50px;
+            height: 45px;
+            margin-right: 10px;
+        }
+
+        .company-name {
+            color: #1d6fab;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+        }
+
+        /* Button Menu Styling */
+        .Button-Menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        /* New Upload Form Layout */
+        #uploadForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Space between file input and button */
+        }
+
+        .button-87 {
+            margin: 10px;
+            padding: 15px 30px;
+            text-align: center;
+            text-transform: uppercase;
+            transition: 0.5s;
+            background-size: 200% auto;
+            color: white;
+            border-radius: 10px;
+            display: inline-block;
+            border: 0px;
+            font-weight: 700;
+            box-shadow: 0px 0px 14px -7px #28a745;
+            background-image: linear-gradient(45deg, #34d058 0%, #28a745 51%, #34d058 100%);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        .button-87:hover {
+            background-position: right center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .button-87:active {
+            transform: scale(0.95);
+        }
+
+        /* File Input Styling */
+        #uploadForm input[type="file"] {
+            font-size: 16px;
+            padding: 10px 20px;
+            border: 2px solid #ccc; /* Default grey border */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #uploadForm input[type="file"].file-selected {
+            border-color: #4CAF50; /* Green border when file is selected */
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        #uploadForm input[type="file"]:hover {
+            border-color: #45a049; /* Change border color on hover */
+            box-shadow: 0 0 5px rgba(69, 160, 73, 0.5); /* Subtle shadow */
+        }
+
+        #uploadForm input[type="file"]::file-selector-button {
+            padding: 8px 16px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #e8ece8; /* Light button background */
+            color: #070707; /* Button text color */
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #uploadForm input[type="file"]::file-selector-button:hover {
+            background: #45a049; /* Darker green on hover */
+            color: white;
+        }
+
+        /* Footer Styling */
+        footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 14px;
+            color: #666;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Responsive Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <!-- Logo and Company Name -->
+    <div class="logo-container">
+        <img src="/static/airmettle_logo.png" alt="AirMettle Logo" />
+        <h3 class="company-name">AirMettle</h3>
+    </div>
+
+    <!-- Main Title -->
+    <h1>Hierarchical Multi-Dimensional Histograms <span id="configDisplay">N-D</span></h1>
+
+    <!-- Button and File Upload Form -->
+    <div class="Button-Menu">
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="file">
+            <button type="submit" class="button-87">Upload</button>
+        </form>
+        <p id="status"></p>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>Version 1.0 License: Evaluation (HMDH) &copy; 2024 AirMettle, Inc. All rights reserved.</p>
+</footer>
+
+<script src="/static/js/index.js"></script>
+<script>
+    // Add 'file-selected' class when a file is chosen
+    document.getElementById('fileInput').addEventListener('change', function() {
+        if (this.files.length > 0) {
+            this.classList.add('file-selected');
+        } else {
+            this.classList.remove('file-selected');
+        }
+    });
+</script>
+</body>
+</html>

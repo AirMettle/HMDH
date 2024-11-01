@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>N-D Data Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        #tooltip {
+            position: absolute;
+            visibility: hidden;
+            background-color: white;
+            border: 1px solid #000;
+            padding: 5px;
+        }
+
+        #tooltip2 {
+            position: absolute;
+            visibility: hidden;
+            background-color: white;
+            border: 1px solid #000;
+            padding: 5px;
+        }
+
+        .plot-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .details-table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        .details-table td,
+        .details-table th {
+            border: 1px solid transparent;
+            text-align: center;
+            padding: 8px;
+        }
+
+        .details-table th {
+            width: 25%;
+        }
+
+        .details-table .percentage-column {
+            width: 10%;
+        }
+
+        .bit-box {
+            display: inline-block;
+            padding: 5px;
+            margin: 2px;
+            border: 1px solid black;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .bit-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .details-table tr {
+            height: 50px;
+        }
+
+        .z-label {
+            text-align: center;
+            margin: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 36px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .Button-Menu {
+            display: flex;
+            justify-content: center;
+            /* This centers the buttons horizontally */
+            align-items: center;
+            /* This centers the buttons vertically (if the div has a specific height) */
+            flex-wrap: wrap;
+            /* Allows buttons to wrap into the next line if there's not enough space */
+            gap: 10px;
+            /* Optional: adds space between buttons */
+            margin-bottom: 20px;
+        }
+
+        .show-legend-button {
+            display: none;
+            justify-content: center;
+            /* This centers the buttons horizontally */
+            align-items: center;
+            /* This centers the buttons vertically (if the div has a specific height) */
+            flex-wrap: wrap;
+            /* Allows buttons to wrap into the next line if there's not enough space */
+            gap: 10px;
+            /* Optional: adds space between buttons */
+            margin-bottom: 20px;
+        }
+
+        .show-legend-button button {
+            padding: 10px 20px;
+            /* Adds padding inside the buttons */
+            cursor: pointer;
+            /* Changes cursor to pointer on hover over buttons */
+        }
+
+        .show-legend-button2 {
+            display: flex;
+            justify-content: center;
+            /* This centers the buttons horizontally */
+            align-items: center;
+            /* This centers the buttons vertically (if the div has a specific height) */
+            flex-wrap: wrap;
+            /* Allows buttons to wrap into the next line if there's not enough space */
+            gap: 10px;
+            /* Optional: adds space between buttons */
+            margin-bottom: 20px;
+        }
+
+        .show-legend-button2 button {
+            padding: 10px 20px;
+            /* Adds padding inside the buttons */
+            cursor: pointer;
+            /* Changes cursor to pointer on hover over buttons */
+        }
+
+        .Button-Menu button {
+            padding: 10px 20px;
+            /* Adds padding inside the buttons */
+            cursor: pointer;
+            /* Changes cursor to pointer on hover over buttons */
+            /* Additional button styling here */
+        }
+
+        #details-view {
+            text-align: center;
+        }
+
+        .show-arrow-outer-div {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 100px;
+            /* Adjust based on your needs */
+            width: 100%;
+            /* Adjust based on your needs or use a specific width */
+
+        }
+        .show-arrow-outer-div2 {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 100px;
+            /* Adjust based on your needs */
+            width: 100%;
+            /* Adjust based on your needs or use a specific width */
+
+        }
+        .show-arrow-outer-div3 {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 100px;
+            /* Adjust based on your needs */
+            width: 100%;
+            /* Adjust based on your needs or use a specific width */
+
+        }
+        .show-arrow-outer-div4 {
+            display: flex;
+            justify-content: center;
+            /* Center horizontally */
+            align-items: center;
+            /* Center vertically */
+            height: 100px;
+            /* Adjust based on your needs */
+            width: 100%;
+            /* Adjust based on your needs or use a specific width */
+
+        }
+
+        .show-arrow {
+            width: 50px;
+            /* Adjust based on the size of your arrow */
+            height: 50px;
+            /* Adjust based on the size of your arrow */
+            background-image: url('../static/down-arrow-svgrepo-com.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: none;
+        }
+
+        .show-arrow2 {
+            width: 50px;
+            /* Adjust based on the size of your arrow */
+            height: 50px;
+            /* Adjust based on the size of your arrow */
+            background-image: url('../static/down-arrow-svgrepo-com.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: none;
+        }
+
+        .show-arrow3 {
+            width: 50px;
+            /* Adjust based on the size of your arrow */
+            height: 50px;
+            /* Adjust based on the size of your arrow */
+            background-image: url('../static/down-arrow-svgrepo-com.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: none;
+        }
+
+        .show-arrow4 {
+            width: 50px;
+            /* Adjust based on the size of your arrow */
+            height: 50px;
+            /* Adjust based on the size of your arrow */
+            background-image: url('../static/down-arrow-svgrepo-com.svg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: none;
+        }
+
+        .fst-Matrix-text {
+            font-size: 24px;
+            /* Adjust the font size as needed */
+        }
+
+        .h3-text {
+            display: none;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .h3-text2 {
+            display: none;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        #details-view-tle {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .drill-more-button {
+            margin-left: 20px;
+            margin-top: 20px;
+            padding: 5px 10px;
+            /* Adds padding inside the buttons */
+            cursor: pointer;
+        }
+
+        #plot-container2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            /* Adjusts spacing around each plot */
+            align-items: flex-start;
+            /* Aligns items at the start of the container */
+        }
+
+        #plot-container3 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            /* Adjusts spacing around each plot */
+            align-items: flex-start;
+            /* Aligns items at the start of the container */
+        }
+
+        .plot-wrapper2 {
+            width: 24%;
+            /* Adjust this value so that four items fit in one row */
+            margin: 5px;
+            /* Adds some space around each plot wrapper */
+            display: flex;
+            flex-direction: column;
+            /* Stack Z label and svg vertically */
+            align-items: center;
+            /* Center-aligns the items */
+        }
+
+        .plot-wrapper3 {
+            width: 24%;
+            /* Adjust this value so that four items fit in one row */
+            margin: 5px;
+            /* Adds some space around each plot wrapper */
+            display: flex;
+            flex-direction: column;
+            /* Stack Z label and svg vertically */
+            align-items: center;
+            /* Center-aligns the items */
+        }
+
+        #details-view2 {
+            text-align: center;
+        }
+
+        #details-view-M-P {
+            display: flex;
+            justify-content: center;
+            /* Centers children horizontally in the container */
+            align-items: center;
+            /* Centers children vertically in the container */
+            flex-direction: row;
+            /* Aligns children in a row */
+            gap: 20px;
+            /* Optional: adds space between children */
+            font-size: 24px;
+        }
+
+        .mp-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            /* Adjust spacing as needed */
+        }
+
+        .mp-title {
+            text-align: center;
+        }
+
+        .bit-box2 {
+            display: inline-block;
+            margin: 2px;
+            padding: 5px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+        #xyz-labels {
+            margin-top: 55px;
+            /* Adjust the value as needed to shift down */
+            margin-left: 20px;
+        }
+
+        #xyz-labels>div,
+        #xyz-labels>span {
+            margin-bottom: 20px;
+            /* Adjust the value as needed */
+        }
+
+        .bit-box2-blue {
+            background-color: #CCFFFF;
+            /* Light blue */
+            color: black;
+            /* Ensure text is readable */
+            /* Other styling as needed */
+        }
+
+        .bit-box2-green {
+            background-color: #99FFCC;
+            color: black;
+            /* Other styling as needed */
+        }
+
+        .bit-box2-yellow {
+            background-color: #FFFF99;
+            color: black;
+            /* Adjust text color for visibility */
+            /* Other styling as needed */
+        }
+
+        .bit-box2-pink {
+            background-color: #FF99FF;
+            color: black;
+            /* Adjust text color for visibility */
+            /* Other styling as needed */
+        }
+
+        .legend-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .legend-content {
+            position: relative;
+            margin: 10% auto;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .leveldisplay2 {
+            display: none;
+        }
+
+        .leveldisplay3 {
+            display: none;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            /* Aligns the text and logo vertically */
+        }
+
+        .logo-container img {
+            width: 50px;
+            /* Adjust the logo size */
+            height: 45px;
+            /* Adjust the logo size */
+            margin-right: 5px;
+            /* Adds space between the logo and the text */
+        }
+
+        .company-name {
+            color: #1d6fab;
+            /* Sets the text color to blue */
+            font-size: 30px;
+            /* Optional: Adjust the size of the h3 tag */
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .wrapper {
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        /* Sticky footer styling */
+        footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="logo-container">
+        <!-- Logo image -->
+        <img src="/static/airmettle_logo.png" alt="AirMettle Logo" />
+        <!-- Company name -->
+        <h3 class="company-name">AirMettle</h3>
+    </div>
+    <h1>Hierarchical Multi-Dimensional Histograms <span id="configDisplay">2-D</span> </h1>
+    <div class="content">
+        <div class="Button-Menu">
+            <button onclick="setAndLoadPlots('linear')">Linear Scale</button>
+            <button onclick="setAndLoadPlots('log')">Log Scale</button>
+            <button onclick="resetPage()">Reset</button>
+            <button onclick="showLegend()">Legend</button>
+            <button onclick="showTable()">Table</button>
+        </div>
+        <div id="legend-overlay" class="legend-overlay" style="display: none;">
+            <div class="legend-content">
+                <span class="close-btn" onclick="closeLegend()">&times;</span>
+                <h2>Legend</h2>
+                <table>
+                    <tr>
+                        <th>TLE Bits</th>
+                        <th>Description</th>
+                    </tr>
+                    <!-- JavaScript will dynamically insert rows here -->
+                </table>
+            </div>
+        </div>
+        <div class="leveldisplay">
+            <h1>Level 1</h1>
+        </div>
+        <div id="plot-container" class="plot-container">
+            <!-- D3 plots will be appended here -->
+        </div>
+
+        <div id="tooltip"></div>
+        <div id="tooltip2"></div>
+        <div class="show-arrow-outer-div">
+            <div class="show-arrow"></div>
+        </div>
+
+        <div id="details-view" style="margin-top: 20px;"></div>
+        <div id="details-view-tle" style="margin-top: 20px;">
+            <div class="h3-text">Top Level Encoding Bits</div>
+        </div>
+        <div class="show-arrow-outer-div2">
+            <div class="show-arrow2"></div>
+        </div>
+        <div class="leveldisplay2">
+            <h1>Level 2</h1>
+        </div>
+        <div id="show-legend-button" class="show-legend-button" style="display: none;">
+            <button onclick="showLegend2()">Show Legend</button>
+        </div>
+        <div id="plot-container2" class="plot-container2">
+            <!-- D3 plots will be appended here -->
+        </div>
+        <div class="show-arrow-outer-div3">
+            <div class="show-arrow3"></div>
+        </div>
+        <div class="leveldisplay3">
+            <h1>Level 3</h1>
+        </div>
+        <div id="show-legend-button2" class="show-legend-button2">
+            <button class="show-legend-button_btn"></button>
+        </div>
+        <div id="plot-container3" class="plot-container3">
+            <!-- D3 plots will be appended here -->
+        </div>
+        <div class="show-arrow-outer-div4">
+            <div class="show-arrow4"></div>
+        </div>
+
+        <div id="details-view-M-P" style="margin-top: 20px; display: flex;">
+
+            <div id="xyz-labels" class="mp-section"></div> <!-- For X, Y, Z labels -->
+            <div id="m-bits" class="mp-section"></div> <!-- For M bits -->
+            <div id="p-bits" class="mp-section"></div> <!-- For P bits -->
+        </div>
+    </div>
+    <footer>
+        <p>Version 1.0 License: Evaluation (HMDH) &copy; 2024 AirMettle, Inc. All rights reserved.</p>
+    </footer>
+</div>
+
+<script src="/static/js/histogram2d.js"></script>
+</body>
+
+</html>
