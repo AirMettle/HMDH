@@ -1,6 +1,7 @@
-# HMDH
+# Hierarchical Multi-Dimensional Histograms
 
-HMDH (Hierarchical Multi-Dimensional Histograms) is a software library designed for efficient data summarization, enabling rapid exploratory analysis on integer and floating-point data. HMDH provides fast, space- and time-efficient encoding of data characteristics across multiple orders of magnitude in a single pass.
+## Overview
+Hierarchical Multi-Dimensional Histograms (HMDH) is a software library designed for efficient data summarization, enabling rapid exploratory analysis on integer and floating-point data. HMDH provides fast, space- and time-efficient encoding of data characteristics across multiple orders of magnitude in a single pass.
 
 This public version supports one- and two-dimensional data structures and includes a graphical interface for interactive exploration. It is intended for non-commercial research and evaluation only (please refer to the license).
 
