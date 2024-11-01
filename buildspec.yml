@@ -3,6 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
+      - apt update
       - apt install -y cmake
       - apt install -y g++
       - NUM_CORES=$(nproc || sysctl -n hw.ncpu)
