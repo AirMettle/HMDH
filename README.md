@@ -1,12 +1,12 @@
 # Hierarchical Multi-Dimensional Histograms
 
 ## Overview
-Hierarchical Multi-Dimensional Histograms (HMDH) is a software library designed for efficient data summarization, enabling rapid exploratory analysis on integer and floating-point data. HMDH provides fast, space- and time-efficient encoding of data characteristics across multiple orders of magnitude in a single pass.
+Hierarchical Multi-Dimensional Histograms (HMDH) is a software library designed for efficient data summarization, enabling rapid exploratory analysis on integer and floating-point data. HMDH (patent pending) provides fast, space- and time-efficient encoding of data characteristics across multiple orders of magnitude in a single pass.
 
-This public version supports one- and two-dimensional data structures and includes a graphical interface for interactive exploration. It is intended for non-commercial research and evaluation only (please refer to the license).
+This public version supports one-dimensional and two-dimensional data structures and includes a graphical interface for interactive exploration. It is intended for non-commercial research and evaluation purposes only (please refer to the license).
 
-A commercial version is available with expanded capabilities, a CLI for generating HMDH from parquet files, supporting higher-dimensional data, finer resolution per dimension, and advanced querying features (e.g., range queries, percentile calculations, etc.). This version can process hundreds of millions of data points into compact, searchable structures occupying just a fraction of a megabyte, retaining precise counts and addressing at each hierarchical level. The commercial library also supports parallel generation, merging, and comparison of histograms, facilitating the analysis of variations across datasets.
-Some current clients are using up to four dimensions in operations.
+A commercial version is available with expanded capabilities: a CLI for generating HMDH from Parquet files, support for up to four dimensions, finer resolution per dimension, and advanced querying features (e.g., range queries, finding percentile of data, etc.). HMDH can process hundreds of millions to billions of data points into compact, searchable structures that typically occupy just a fraction of a megabyte, retaining precise counts and addressing at each hierarchical level! The commercial library also supports parallel generation, merging, and comparison of histograms, facilitating analysis of variations across datasets.
+Some current clients are using HMDH’s one to four-dimensions in their operations.
 
 For further information, contact: hmdh@airmettle.com
 
